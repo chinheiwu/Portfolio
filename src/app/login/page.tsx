@@ -1,3 +1,5 @@
+import LoginForm from "@/components/LoginForm";
+
 export default async function LoginPage({
   searchParams,
 }: {
@@ -28,23 +30,7 @@ export default async function LoginPage({
           </p>
         )}
 
-        <form action="/api/site-login" method="POST" className="mt-6 space-y-3">
-          <input type="hidden" name="next" value={next || "/"} />
-          <input
-            type="password"
-            name="password"
-            required
-            autoFocus
-            placeholder="Password"
-            className="w-full rounded-lg border border-surface-border bg-background px-4 py-3 text-sm outline-none focus:border-accent"
-          />
-          <button
-            type="submit"
-            className="w-full rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground transition-opacity hover:opacity-90"
-          >
-            Enter
-          </button>
-        </form>
+        <LoginForm next={next || "/"} />
       </div>
     </section>
   );
