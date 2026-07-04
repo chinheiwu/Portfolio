@@ -20,7 +20,13 @@ export default async function LoginPage({
           Google account to request access.
         </p>
 
-        {error && (
+        {error === "config" && (
+          <p className="mt-4 rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-500">
+            Sign-in isn&apos;t configured yet. The site owner needs to set
+            GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET / AUTH_SECRET.
+          </p>
+        )}
+        {error && error !== "config" && (
           <p className="mt-4 rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-500">
             Something went wrong signing you in. Please try again.
           </p>

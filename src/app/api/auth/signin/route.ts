@@ -7,7 +7,15 @@ export async function GET(request: NextRequest) {
   const next = request.nextUrl.searchParams.get("next") || "/";
   const redirectUri = new URL("/api/auth/callback", request.nextUrl.origin).toString();
 
-  const response = NextResponse.redirect(buildGoogleAuthUrl(redirectUri, state));
+  let authUrl: string;
+  try {
+    authUrl = buildGoogleAuthUrl(redirectUri, state);
+  } catch (error) {
+    console.error("Failed to build Google auth URL:", error);
+    return NextResponse.redirect(new URL("/login?error=config", request.nextUrl.origin));
+  }
+
+  const response = NextResponse.redirect(authUrl);
 
   response.cookies.set("oauth_state", state, {
     httpOnly: true,
