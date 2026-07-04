@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { cookies } from "next/headers";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { decryptSession, SESSION_COOKIE_NAME } from "@/lib/session";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -73,11 +75,14 @@ const themeInitScript = `
 })();
 `;
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const session = await decryptSession(cookieStore.get(SESSION_COOKIE_NAME)?.value);
+
   return (
     <html
       lang="en"
@@ -88,7 +93,7 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body className="min-h-full flex flex-col bg-background text-foreground">
-        <Navbar />
+        <Navbar viewerName={session?.name} />
         <main className="flex-1">{children}</main>
         <Footer />
       </body>

@@ -11,7 +11,7 @@ const links = [
   { href: "#contact", label: "Contact" },
 ];
 
-export default function Navbar() {
+export default function Navbar({ viewerName }: { viewerName?: string }) {
   const [isDark, setIsDark] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -66,12 +66,25 @@ export default function Navbar() {
           >
             {isDark ? "☀" : "🌙"}
           </button>
+          {viewerName && (
+            <span className="hidden text-sm text-foreground/60 sm:inline">
+              Hi, {viewerName}
+            </span>
+          )}
           <a
             href="#contact"
             className="hidden rounded-full bg-accent px-4 py-2 text-sm font-semibold text-accent-foreground transition-opacity hover:opacity-90 sm:inline-block"
           >
             Contact Me
           </a>
+          {viewerName && (
+            <a
+              href="/api/auth/signout"
+              className="text-sm font-medium text-foreground/60 transition-colors hover:text-foreground"
+            >
+              Sign out
+            </a>
+          )}
         </div>
       </nav>
     </header>
