@@ -26,9 +26,12 @@ section — there's no single scrolling homepage.
 
 ```
 src/
+  proxy.ts                Gates every route behind the site password cookie
   app/
     layout.tsx          Root layout, SEO metadata, dark mode init script
     page.tsx            Homepage — Hero only
+    login/               Password entry page
+    api/site-login/       Verifies the password and sets the access cookie
     about/               About page
     experience/           Experience timeline page
     projects/             Projects grid page
@@ -39,6 +42,7 @@ src/
   components/            Sidebar, Hero, About, Experience, Projects,
                           ProjectCard, Education, Contact, Footer, FadeIn
   lib/
+    site-access.ts         Password check + signed access-cookie verification
     allowlist.ts           Fetches the viewer list from Google Sheets (for /viewers)
   data/
     projects.ts          Project content — edit this to add/update case studies
@@ -72,6 +76,27 @@ directly (e.g. via [Formspree](https://formspree.io)):
 2. Set the environment variable `NEXT_PUBLIC_FORMSPREE_ENDPOINT` to that URL,
    locally in `.env.local` and in your Vercel project settings.
 
+## Password Protection
+
+The entire site is gated behind a single shared password (`src/proxy.ts`).
+Visitors must enter it at `/login` before they can view any page; a signed
+cookie (valid 30 days) then remembers them.
+
+### Required environment variables
+
+| Variable | Description |
+| --- | --- |
+| `SITE_PASSWORD` | The shared password visitors must enter. |
+| `AUTH_SECRET` | Random secret used to sign the access cookie (HMAC). Generate with `openssl rand -base64 32`. |
+
+Set both in `.env.local` for local development (already gitignored) and in
+your Vercel project's Environment Variables for production. Never commit the
+real password to the repo.
+
+To change the password, update `SITE_PASSWORD` in Vercel and redeploy —
+existing visitors' cookies stay valid until they expire or are cleared, since
+the cookie doesn't store the password itself.
+
 ## Viewers Page
 
 `/viewers` (linked in the footer) publicly lists the names from a master
@@ -85,18 +110,20 @@ shows up immediately, no redeploy needed. Only names are shown, not emails.
 - Override which sheet is used with the optional `ALLOWLIST_SHEET_ID`
   environment variable (see `src/lib/allowlist.ts`).
 
-> Note: this site previously had a Google Sign-In gate restricting the whole
-> site to allowlisted viewers. That was removed — the site is fully public
-> again, and `/viewers` is just an informational page, not an access control.
+> Note: `/viewers` is just an informational page — it does not grant or
+> restrict access. Actual site access is controlled by the password gate
+> above.
 
 ## Deploying to Vercel
 
 1. Push this repository to GitHub/GitLab/Bitbucket.
 2. Go to [vercel.com/new](https://vercel.com/new) and import the repository.
 3. Vercel auto-detects Next.js — no extra config needed.
-4. (Optional) Add `NEXT_PUBLIC_FORMSPREE_ENDPOINT` if you want a functional
+4. Add `SITE_PASSWORD` and `AUTH_SECRET` under Project Settings →
+   Environment Variables (see "Password Protection" above).
+5. (Optional) Add `NEXT_PUBLIC_FORMSPREE_ENDPOINT` if you want a functional
    contact form.
-5. Deploy.
+6. Deploy.
 
 Or via CLI:
 
