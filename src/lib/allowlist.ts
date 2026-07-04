@@ -1,8 +1,8 @@
 import "server-only";
 
 // Master viewer list — a Google Sheet with "User Name" and "Email" columns.
-// Add more rows to the sheet to grant access; no redeploy needed since this
-// is fetched live on every login and every request through the proxy.
+// Displayed on /viewers. Add more rows to the sheet and they'll show up
+// immediately since this is fetched live on every request, no redeploy needed.
 const DEFAULT_SHEET_ID = "1BTzkldLDWuCdOR5jX4MwTorl0ObOcNbsdJZfwtj0Jkg";
 
 function getSheetCsvUrl() {
@@ -33,12 +33,4 @@ export async function fetchAllowedViewers(): Promise<AllowedViewer[]> {
   }
   const csv = await res.text();
   return parseCsv(csv);
-}
-
-export async function findAllowedViewer(
-  email: string
-): Promise<AllowedViewer | null> {
-  const normalized = email.toLowerCase();
-  const viewers = await fetchAllowedViewers();
-  return viewers.find((viewer) => viewer.email === normalized) ?? null;
 }

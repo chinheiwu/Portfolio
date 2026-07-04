@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const socials = [
   // TODO: replace with your real profile URLs
   { label: "LinkedIn", href: "https://linkedin.com/in/chinheiwu" },
@@ -21,6 +23,9 @@ export default function Footer() {
               {social.label}
             </a>
           ))}
+          <Link href="/viewers" className="transition-colors hover:text-foreground">
+            Viewers
+          </Link>
         </div>
       </div>
     </footer>
