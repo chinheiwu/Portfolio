@@ -3,7 +3,7 @@ import { experience } from "@/data/experience";
 
 export default function Experience() {
   return (
-    <section id="experience" className="border-t border-surface-border py-24">
+    <section className="py-24">
       <div className="mx-auto max-w-6xl px-6">
         <FadeIn>
           <h2 className="text-sm font-mono uppercase tracking-widest text-accent">

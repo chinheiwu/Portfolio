@@ -21,14 +21,22 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Project Structure
 
+Navigation is a persistent left sidebar (top bar on mobile) with one page per
+section — there's no single scrolling homepage.
+
 ```
 src/
   app/
     layout.tsx          Root layout, SEO metadata, dark mode init script
-    page.tsx            Homepage — assembles all sections
-    viewers/             Public page listing names from the master Google Sheet
+    page.tsx            Homepage — Hero only
+    about/               About page
+    experience/           Experience timeline page
+    projects/             Projects grid page
     projects/[slug]/     Dynamic project case-study page
-  components/            Navbar, Hero, About, Experience, Projects,
+    education/            Education page
+    contact/              Contact page
+    viewers/             Public page listing names from the master Google Sheet
+  components/            Sidebar, Hero, About, Experience, Projects,
                           ProjectCard, Education, Contact, Footer, FadeIn
   lib/
     allowlist.ts           Fetches the viewer list from Google Sheets (for /viewers)

@@ -55,7 +55,7 @@ export default async function ProjectPage({
 
       <div className="mx-auto max-w-4xl px-6 py-16">
         <Link
-          href="/#projects"
+          href="/projects"
           className="text-sm font-medium text-foreground/60 transition-colors hover:text-foreground"
         >
           ← Back to Projects

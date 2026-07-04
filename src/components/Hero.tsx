@@ -1,13 +1,11 @@
 "use client";
 
+import Link from "next/link";
 import { motion } from "framer-motion";
 
 export default function Hero() {
   return (
-    <section
-      id="hero"
-      className="relative flex min-h-[90vh] items-center overflow-hidden bg-grid"
-    >
+    <section className="relative flex min-h-[90vh] items-center overflow-hidden bg-grid">
       {/* Soft radial gradient overlay to keep the grid subtle */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,transparent_0%,var(--background)_75%)]" />
 
@@ -47,18 +45,18 @@ export default function Hero() {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="mt-10 flex flex-wrap gap-4"
         >
-          <a
-            href="#projects"
+          <Link
+            href="/projects"
             className="rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground transition-transform hover:scale-105"
           >
             View Projects
-          </a>
-          <a
-            href="#contact"
+          </Link>
+          <Link
+            href="/contact"
             className="rounded-full border border-surface-border px-6 py-3 text-sm font-semibold transition-colors hover:bg-surface"
           >
             Contact Me
-          </a>
+          </Link>
         </motion.div>
       </div>
     </section>
