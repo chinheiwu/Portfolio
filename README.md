@@ -78,9 +78,12 @@ directly (e.g. via [Formspree](https://formspree.io)):
 
 ## Password Protection
 
-The entire site is gated behind a single shared password (`src/proxy.ts`).
-Visitors must enter it at `/login` before they can view any page; a signed
-cookie (valid 30 days) then remembers them.
+Only the homepage (`/`) checks for a password, via `src/proxy.ts`. A
+first-time visitor landing on `/` is redirected to `/login`; once they enter
+the correct password, a signed cookie (valid 30 days) remembers them and they
+won't be asked again. Direct links to other pages (e.g. `/about`,
+`/projects/some-project`) are not gated — this is a speed bump on the
+homepage, not full-site protection.
 
 ### Required environment variables
 

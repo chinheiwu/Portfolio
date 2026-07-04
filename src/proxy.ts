@@ -1,19 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { SITE_ACCESS_COOKIE, verifyAccessToken } from "@/lib/site-access";
 
-const PUBLIC_PATHS = ["/login"];
-
+// Only the homepage checks the password. Once past it, every other page
+// (including direct links) is open — the gate is a first-visit speed bump,
+// not full-site protection.
 export default function proxy(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-
-  if (PUBLIC_PATHS.includes(pathname) || pathname.startsWith("/api/site-login")) {
-    return NextResponse.next();
-  }
-
   const token = request.cookies.get(SITE_ACCESS_COOKIE)?.value;
   if (!verifyAccessToken(token)) {
     const loginUrl = new URL("/login", request.nextUrl.origin);
-    loginUrl.searchParams.set("next", pathname);
     return NextResponse.redirect(loginUrl);
   }
 
@@ -21,7 +15,5 @@ export default function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|images/|robots.txt|sitemap.xml).*)",
-  ],
+  matcher: ["/"],
 };
