@@ -26,12 +26,11 @@ section — there's no single scrolling homepage.
 
 ```
 src/
-  proxy.ts                Gates every route behind the site password cookie
+  proxy.ts                Renders the password screen and verifies submissions
+                          for the homepage — no separate login page/route
   app/
     layout.tsx          Root layout, SEO metadata, dark mode init script
     page.tsx            Homepage — Hero only
-    login/               Password entry page
-    api/site-login/       Verifies the password and sets the access cookie
     about/               About page
     experience/           Experience timeline page
     projects/             Projects grid page
@@ -42,6 +41,7 @@ src/
   components/            Sidebar, Hero, About, Experience, Projects,
                           ProjectCard, Education, Contact, Footer, FadeIn
   lib/
+    login-html.ts          Self-contained HTML for the password screen
     site-access.ts         Password check + signed access-cookie verification
     allowlist.ts           Fetches the viewer list from Google Sheets (for /viewers)
   data/
@@ -78,10 +78,12 @@ directly (e.g. via [Formspree](https://formspree.io)):
 
 ## Password Protection
 
-Only the homepage (`/`) checks for a password, via `src/proxy.ts`. A
-first-time visitor landing on `/` is redirected to `/login`; once they enter
-the correct password, a signed cookie (valid 30 days) remembers them and they
-won't be asked again. Direct links to other pages (e.g. `/about`,
+Only the homepage (`/`) checks for a password, entirely inside
+`src/proxy.ts` (Next.js Middleware) — there's no separate `/login` page or
+API route. A first-time visitor landing on `/` is served a self-contained
+HTML password form (`src/lib/login-html.ts`) directly by the proxy; once they
+submit the correct password, a signed cookie (valid 30 days) remembers them
+and they won't be asked again. Direct links to other pages (e.g. `/about`,
 `/projects/some-project`) are not gated — this is a speed bump on the
 homepage, not full-site protection.
 
