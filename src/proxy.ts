@@ -39,7 +39,10 @@ export default async function proxy(request: NextRequest) {
       });
     }
 
-    const response = NextResponse.redirect(request.nextUrl.origin);
+    // 303 (not the default 307) so the browser switches to GET when
+    // following the redirect, instead of replaying this POST against the
+    // homepage — which would 405 since the page only handles GET.
+    const response = NextResponse.redirect(request.nextUrl.origin, 303);
     response.cookies.set(SITE_ACCESS_COOKIE, createAccessToken(), {
       httpOnly: true,
       secure: true,
