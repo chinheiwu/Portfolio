@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { fetchAllowedViewers } from "@/lib/allowlist";
+import RefreshButton from "@/components/RefreshButton";
 
 export const metadata: Metadata = {
   title: "Viewers — Chin Hei Wu",
@@ -21,9 +22,10 @@ export default async function ViewersPage() {
       <p className="font-mono text-xs uppercase tracking-widest text-accent">
         Viewers
       </p>
-      <h1 className="mt-2 text-3xl font-semibold sm:text-4xl">
-        People with access
-      </h1>
+      <div className="mt-2 flex flex-wrap items-center justify-between gap-4">
+        <h1 className="text-3xl font-semibold sm:text-4xl">People with access</h1>
+        <RefreshButton />
+      </div>
       <p className="mt-4 text-foreground/70">
         This list is pulled live from the master spreadsheet, so it&apos;s
         always current.
