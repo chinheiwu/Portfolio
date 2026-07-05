@@ -82,10 +82,11 @@ Only the homepage (`/`) checks for a password, entirely inside
 `src/proxy.ts` (Next.js Middleware) — there's no separate `/login` page or
 API route. A first-time visitor landing on `/` is served a self-contained
 HTML password form (`src/lib/login-html.ts`) directly by the proxy; once they
-submit the correct password, a signed cookie (valid 30 days) remembers them
-and they won't be asked again. Direct links to other pages (e.g. `/about`,
-`/projects/some-project`) are not gated — this is a speed bump on the
-homepage, not full-site protection.
+submit the correct password, a signed cookie (valid 10 minutes, see
+`SESSION_DURATION_SECONDS` in `src/proxy.ts`) remembers them — after 10
+minutes of inactivity they'll be asked again. Direct links to other pages
+(e.g. `/about`, `/projects/some-project`) are not gated — this is a speed
+bump on the homepage, not full-site protection.
 
 ### Required environment variables
 
